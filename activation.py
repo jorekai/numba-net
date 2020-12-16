@@ -59,3 +59,4 @@ s_sigmoid = gu_activate(sigmoid)
 p_sigmoid = gu_activate(sigmoid, target='parallel')
 s_sigmoid_d = gu_activate(sigmoid_d)
 p_sigmoid_d = gu_activate(sigmoid_d, target='parallel')
+
