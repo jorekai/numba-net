@@ -1,7 +1,8 @@
 from math import fabs
 from random import normalvariate
 
-from numba import float32, guvectorize, float64, prange  # import the types
+import numpy as np
+from numba import float32, guvectorize, float64, prange, njit  # import the types
 
 
 def gu_random_normal(func, *args, **kwargs):
@@ -42,6 +43,22 @@ def random_normal_bias(mu, sigma, arr, out):
     dim1 = arr.shape
     for i in prange(*dim1):
         out[i] = fabs(normalvariate(mu, sigma))
+
+
+@njit(fastmath=True, nopython=True)
+def matmul(a, b):
+    return a @ b
+
+
+@njit(fastmath=True)
+def numba_predict(x, W, b):
+    return matmul(x, W) + b
+
+
+def numba_backward(x, W, de_dy, batch_size=24):
+    de_dW = matmul(x.T, de_dy) / batch_size
+    de_db = np.mean(de_dy, axis=0)
+    return de_dW, de_db, matmul(de_dy, W.T)
 
 
 s_rnd_norm_W = gu_random_normal(random_normal)

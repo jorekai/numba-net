@@ -1,4 +1,4 @@
-from activation import *
+from activations import *
 
 
 def test_relu_serialize():
