@@ -1,5 +1,4 @@
-import numpy as np
-
+from activations import *
 from optimizers import s_sgd
 from utils import numba_backward, numba_predict
 
@@ -40,3 +39,30 @@ class Dense:
     def update(self):
         self.W, self.aW = self.optimizer(self.W, self.de_dW, self.aW)
         self.b, self.ab = self.optimizer(self.b, self.de_db, self.ab)
+
+
+class Activation:
+
+    def __init__(self, name):
+        self.fwd, self.bwd = {
+            'relu': (s_relu, s_relu_d),
+            'tanh': (s_tanh, s_tanh_d),
+            'sigmoid': (s_sigmoid, s_sigmoid_d),
+        }[name]
+        self.y = None
+
+    def configure(self, batch_size, optimizer):
+        pass
+
+    def forward(self, x):
+        self.y = self.fwd(x)
+        return self.y
+
+    def backward(self, de_dy):
+        return de_dy * self.bwd(self.y)
+
+    def predict(self, x):
+        return self.fwd(x)
+
+    def update(self):
+        pass
