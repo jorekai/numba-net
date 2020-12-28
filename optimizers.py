@@ -10,15 +10,15 @@ def gu_optimizer(func, *args, **kwargs):
     :return: the decorated loss, error function
     """
     kwargs_ = {k: v for k, v in kwargs.items() if v is not None}
-    return guvectorize([(float32[:], float32[:], float32, float32, float32, float32[:], float32[:]),
-                      (float64[:], float64[:], float64, float64, float64, float64[:], float64[:])],
-                     '(n),(n),(),(),()->(n),(n)', nopython=True, fastmath=True, *args, **kwargs_)(func)
+    return guvectorize([(float32[:], float32[:], float32[:], float32, float32, float32, float32[:], float32[:]),
+                        (float64[:], float64[:], float64[:], float64, float64, float64, float64[:], float64[:])],
+                       '(n),(n),(m),(),(),()->(n),(n)', nopython=True, fastmath=True, *args, **kwargs_)(func)
 
 
-def sgd(x, y, lr, mu, decay, out, init):
-    init[:] = np.zeros_like(x)
+def sgd(x, y, aux, lr, mu, decay, out, init):
+    init[:] = aux[:]
     for i in prange(x.shape[0]):
-        out[i] = (1-decay) * x[i]
+        out[i] = (1 - decay) * x[i]
         init[i] = mu * init[i] - lr * y[i]
         out[i] = np.add(out[i], init[i])
 

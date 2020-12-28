@@ -36,9 +36,9 @@ class Dense:
     def predict(self, x):
         return numba_predict(x, self.W, self.b)
 
-    def update(self):
-        self.W, self.aW = self.optimizer(self.W, self.de_dW, self.aW)
-        self.b, self.ab = self.optimizer(self.b, self.de_db, self.ab)
+    def update(self, lr=1e-4, mu=0.9, decay=0):
+        self.W, self.aW = self.optimizer(self.W, self.de_dW, self.aW, lr, mu, decay)
+        self.b, self.ab = self.optimizer(self.b, self.de_db, self.ab, lr, mu, decay)
 
 
 class Activation:
