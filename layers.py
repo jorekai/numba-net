@@ -5,7 +5,7 @@ from utils import numba_backward, numba_predict
 
 class Dense:
 
-    def __init__(self, input_dim, output_dim, batch_size=256, optimizer=s_sgd):
+    def __init__(self, input_dim, output_dim, batch_size=24, optimizer=s_sgd):
         self.input_dim = input_dim
         self.output_dim = output_dim
         self.batch_size = batch_size
@@ -25,20 +25,24 @@ class Dense:
         self.de_dW = np.zeros_like(self.W)
         self.de_db = np.zeros_like(self.b)
 
+    def configure(self, batch_size, optimizer):
+        self.batch_size = batch_size
+        self.optimizer = optimizer
+
     def forward(self, x):
         self.x = x
         return self.predict(x)
 
     def backward(self, de_dy):
-        self.de_dW, self.de_db, de_dY = numba_backward(self.x.T, self.W, de_dy, self.batch_size)
+        self.de_dW, self.de_db, de_dY = numba_backward(self.x, self.W, de_dy, self.batch_size)
         return de_dY
 
     def predict(self, x):
         return numba_predict(x, self.W, self.b)
 
-    def update(self, lr=1e-4, mu=0.9, decay=0):
-        self.W, self.aW = self.optimizer(self.W, self.de_dW, self.aW, lr, mu, decay)
-        self.b, self.ab = self.optimizer(self.b, self.de_db, self.ab, lr, mu, decay)
+    def update(self, lr=1e-2, mu=0.9, decay=0):
+        self.W, self.auxW = self.optimizer(self.W, self.de_dW, self.auxW, lr, mu, decay)
+        self.b, self.auxb = self.optimizer(self.b, self.de_db, self.auxb, lr, mu, decay)
 
 
 class Activation:
@@ -63,6 +67,28 @@ class Activation:
 
     def predict(self, x):
         return self.fwd(x)
+
+    def update(self):
+        pass
+
+
+class Dropout:
+
+    def __init__(self, ratio=0.4):
+        self.ratio = ratio
+
+    def configure(self, batch_size, optimizer):
+        pass
+
+    def forward(self, x):
+        self.mask = 1.0 * (np.random.rand(*x.shape) > self.ratio)
+        return x * self.mask
+
+    def backward(self, de_dy):
+        return de_dy * self.mask
+
+    def predict(self, x):
+        return x
 
     def update(self):
         pass
