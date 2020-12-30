@@ -25,7 +25,7 @@ def sgd(x, y, aux, lr, mu, decay, out, init):
     :param decay: temporal decay factor
     :param out: update vector
     :param init: update auxilliary vector
-    :return:
+    :return: (out, init)
     """
     init[:] = aux[:]
     for i in prange(x.shape[0]):
@@ -44,6 +44,19 @@ def gu_adam_optimizer(func, *args, **kwargs):
 
 
 def adam(x, y, aux, lr, beta1, beta2, eps, decay, out, init):
+    """
+    :param x: input vector
+    :param y: target vector
+    :param aux: auxilliary vector
+    :param lr: learning rate alpha
+    :param beta1: hyperparam1
+    :param beta2: hyperparam2
+    :param eps: avoid vanishing gradient/zero division
+    :param decay: weight decay factor
+    :param out: update vector
+    :param init: update auxilliary vector
+    :return: (out, init)
+    """
     init[:][:] = aux[:][:]
     for i in prange(aux.shape[1]):
         init[0][i] = beta1 * aux[0][i] + (1 - beta1) * y[i]
