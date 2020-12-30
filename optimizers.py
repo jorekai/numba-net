@@ -66,6 +66,7 @@ def adam(x, y, aux, lr, beta1, beta2, eps, decay, out, init):
     out[:] = out[:] + (-lr * init[0] / (np.sqrt(init[1]) + eps))
 
 
+# Export Optimizer variables serial/parallel option
 s_sgd = gu_optimizer(sgd)
 p_sgd = gu_optimizer(sgd, target='parallel')
 s_adam = gu_adam_optimizer(adam)
