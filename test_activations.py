@@ -1,5 +1,3 @@
-import numpy as np
-
 from activations import *
 
 
@@ -56,4 +54,11 @@ def test_sigmoid_parallel_d():
     a = [-1, 0, 1]
     b = p_sigmoid_d(a)
     c = [(x - x ** 2) for x in a]
+    np.testing.assert_allclose(b, c)
+
+
+def test_tanh_serialize():
+    a = [-1, 0, 1]
+    b = s_tanh(a)
+    c = np.tanh(a)
     np.testing.assert_allclose(b, c)
