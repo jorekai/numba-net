@@ -69,3 +69,15 @@ def test_tanh_parallel():
     b = p_tanh(a)
     c = np.tanh(a)
     np.testing.assert_allclose(b, c)
+
+def test_tanh_serialize_d():
+    a = [-1, 0, 1]
+    b = s_tanh_d(a)
+    c = [(1 - x ** 2) for x in a]
+    np.testing.assert_allclose(b, c)
+
+def test_tanh_parallel_d():
+    a = [-1, 0, 1]
+    b = p_tanh_d(a)
+    c = [(1 - x ** 2) for x in a]
+    np.testing.assert_allclose(b, c)
