@@ -131,16 +131,33 @@ class Activation:
 class Dropout:
 
     def __init__(self, ratio=0.4):
+        """
+        The Dropout layer randomly masks weights in out network by a certain ratio
+        :param ratio: 1 >= p >= 0
+        """
         self.ratio = ratio
 
     def configure(self, batch_size, optimizer):
+        """
+        nothing to configure here
+        """
         pass
 
     def forward(self, x):
+        """
+        The forward pass is the masking
+        :param x: weight vector
+        :return: masked weight vector
+        """
         self.mask = 1.0 * (np.random.rand(*x.shape) > self.ratio)
         return x * self.mask
 
     def backward(self, de_dy):
+        """
+        backward pass of the masked weight vector for Higher Order layers
+        :param de_dy: derivative vector
+        :return: masked derivative vector
+        """
         return de_dy * self.mask
 
     def predict(self, x):
