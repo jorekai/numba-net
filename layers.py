@@ -88,8 +88,12 @@ class Dense:
 
 
 class Activation:
-
     def __init__(self, name):
+        """
+        The activation layer is treated as a layer even though it is only the activation function
+        TODO: implement a choice to parallel acces of activation function
+        :param name: choose->("relu","tanh", "sigmoid")
+        """
         self.fwd, self.bwd = {
             'relu': (s_relu, s_relu_d),
             'tanh': (s_tanh, s_tanh_d),
@@ -101,10 +105,20 @@ class Activation:
         pass
 
     def forward(self, x):
+        """
+        Forward here is equal to calculation of the activation function on vector
+        :param x: input vector
+        :return: f(x)
+        """
         self.y = self.fwd(x)
         return self.y
 
     def backward(self, de_dy):
+        """
+        The derivative of the activation to update the Higher Order layer
+        :param de_dy: derivative
+        :return: calculate the derivative activation values
+        """
         return de_dy * self.bwd(self.y)
 
     def predict(self, x):
