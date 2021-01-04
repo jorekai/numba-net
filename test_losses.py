@@ -14,3 +14,9 @@ def test_s_mse():
     assert loss == 0
     assert all(error == [0, 0, 0])
     assert type(error) == np.ndarray
+
+def test_p_mse():
+    loss, error = p_mse(x1, y1)
+    assert loss == 0
+    assert all(error == [0, 0, 0])
+    assert type(error) == np.ndarray
