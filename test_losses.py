@@ -1,12 +1,7 @@
 from losses import *
 
-x1 = np.array([-1, -1, -1], dtype=np.float32)
-x2 = np.array([0, 0, 0], dtype=np.float32)
-x3 = np.array([1, 1, 1], dtype=np.float32)
-
-y1 = np.array([-1, -1, -1], dtype=np.float32)
-y2 = np.array([0, 0, 0], dtype=np.float32)
-y3 = np.array([1, 1, 1], dtype=np.float32)
+x1 = np.array([-1, 0, 1], dtype=np.float32)
+y1 = np.array([-1, 0, 1], dtype=np.float32)
 
 
 def test_s_mse():
@@ -14,9 +9,14 @@ def test_s_mse():
     assert loss == 0
     assert all(error == [0, 0, 0])
     assert type(error) == np.ndarray
+    for x in error:
+        assert type(x) == np.float32
+
 
 def test_p_mse():
     loss, error = p_mse(x1, y1)
     assert loss == 0
     assert all(error == [0, 0, 0])
     assert type(error) == np.ndarray
+    for x in error:
+        assert type(x) == np.float32
