@@ -16,18 +16,32 @@ def gu_loss(func, *args, **kwargs):
 
 
 def mse(x, y, loss, error):
+    """
+    The mean squared error function returns loss and error tuple
+    :param x: input vector
+    :param y: target vector
+    :param loss: loss vector
+    :param error: error vector
+    """
     for i in range(y.shape[0]):
         error[i] = y[i] - x[i]
     loss[0] = 0.5 * np.sum(error[:] ** 2)
 
 
 def cross_entropy(x, y, loss, derivation):
+    """
+    THe cross entropy error function returns loss and error tuple
+    :param x: input vector
+    :param y: target vector
+    :param loss: loss vector
+    :param error: error vector
+    """
     l = np.log(y[:])
     for i in range(y.shape[0]):
         derivation[i] = -(x[i] / y[i])
     loss[0] = -np.sum(x[:] * l)
 
-
+# loss function exports
 s_mse = gu_loss(mse)
 p_mse = gu_loss(mse, target='parallel')
 s_ce = gu_loss(cross_entropy)
