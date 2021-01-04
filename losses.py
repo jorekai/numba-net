@@ -36,10 +36,13 @@ def cross_entropy(x, y, loss, derivation):
     :param loss: loss vector
     :param error: error vector
     """
-    l = np.log(y[:])
+    l = np.log(y[:]+1e-12)
     for i in range(y.shape[0]):
-        derivation[i] = -(x[i] / y[i])
-    loss[0] = -np.sum(x[:] * l)
+        if y[i] == 0:
+            derivation[i] = 0.
+        elif y[i] != 0:
+            derivation[i] = -x[i]/y[i]
+        loss[0] = -np.sum(x[:] * l)
 
 # loss function exports
 s_mse = gu_loss(mse)

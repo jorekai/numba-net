@@ -20,3 +20,13 @@ def test_p_mse():
     assert type(error) == np.ndarray
     for x in error:
         assert type(x) == np.float32
+
+
+def test_s_ce():
+    loss, error = s_ce(x1, y1)
+    print(loss, error)
+    assert np.isnan(loss)
+    assert all(error == [-1, 0, -1])
+    assert type(error) == np.ndarray
+    for x in error:
+        assert type(x) == np.float32
