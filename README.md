@@ -1,5 +1,6 @@
 # numba-net
-a tiny neural net library decorated to be fast - still in development
+a tiny neural net library decorated to be fast
+J4F
 
 # TODO
 
