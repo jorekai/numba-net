@@ -21,3 +21,4 @@ INFO: everything is parallelized
 1. Get more layers working
 2. Debug optimizers
 3. Debug Layers
+4. Make tests seem useful LOL
