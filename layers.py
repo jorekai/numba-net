@@ -165,3 +165,29 @@ class Dropout:
 
     def update(self):
         pass
+
+
+class Softmax:
+    # Still must be numba conformed
+    def __init__(self):
+        pass
+
+    def forward(self, x):
+        self.y = self.predict(x)
+        return self.y
+
+    def backward(self, de_dy):
+        ey = de_dy * self.y
+        ss = ey.sum(axis=1).reshape((-1, 1))
+        return ey - self.y * ss
+
+    def configure(self, batch_size, optimizer):
+        pass
+
+    def predict(self, x):
+        xx = x.T
+        e = np.exp(xx - xx.max(axis=0))
+        return np.transpose(e / e.sum(axis=0))
+
+    def update(self):
+        pass
